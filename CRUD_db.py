@@ -2,7 +2,7 @@ import mysql.connector
 
 DB_CONFIG = {
     'host': 'localhost',  # 127.0.0.1 alternatyva rasymui "localhost" ;)
-    'port': 3312,
+    'port': 3306,
     'user': 'root',
     'password': "****",
     'database': 'library'
@@ -30,7 +30,7 @@ def load_data():
     conn = get_conn()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM library")
+    cursor.execute("SELECT * FROM authors")
     rows = cursor.fetchall()
 
     cursor.close()
@@ -54,8 +54,8 @@ def create_data(authors):
     conn = get_conn()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO authors (id, name, surname) VALUES (%s, %s, %s)",
-                   (id, name, surname))
+    cursor.execute('INSERT INTO authors(name, surname) VALUES (%s, %s)',
+                   (name, surname))
     conn.commit()
 
     cursor.close()
@@ -67,7 +67,7 @@ def edit_data(authors):
     id = input()
     conn = get_conn()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM authors WHERE id = %s", (id,))
+    cursor.execute("SELECT * FROM library.authors WHERE id = %s", (id,))
     row = cursor.fetchone()
 
     if row:
